@@ -34,9 +34,10 @@ Việc hiển thị ngày tháng hiện tại là một yêu cầu thường g�
 import { test, expect } from "@playwright/test";
 
 const mock = [{name:"Cam",id: 1},{name:"Táo",id: 2},{name:"Xoài",id: 3}]
+const fruitapi = '*/**/api/v1/fruits'
 
 test('List fruits mocking API',async ({page})=>{
-    await page.route('*/**/api/v1/fruits', async route =>{
+    await page.route(fruitapi, async route =>{
         await route.fulfill({
           status:200,body: 
           JSON.stringify(mock)})
@@ -44,9 +45,11 @@ test('List fruits mocking API',async ({page})=>{
 
     await page.goto('https://demo.playwright.dev/api-mocking');
     
-    await page.waitForResponse()
+    const responsePromise = await page.waitForResponse(res =>
+        res.status() == 200 && res.url() == fruitapi
+    )
+    
+    console.log(responsePromise)
 
     expect(page.locator('ul')).toHaveCount(3)
-
-
 })
