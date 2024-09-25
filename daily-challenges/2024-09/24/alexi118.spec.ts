@@ -4,26 +4,26 @@
 Việc hiển thị ngày tháng hiện tại là một yêu cầu thường gặp trong các ứng dụng. Trong bài tập này, bạn sẽ viết một hàm để lấy ngày hiện tại và hiển thị nó theo định dạng dd/mm/yyyy.
 */
 
-const date = new Date().toLocaleDateString();
-// const date = '1/5/2024'
+// const date = new Date().toLocaleDateString();
+// // const date = '1/5/2024'
 
-function getCurrentDate(){
-  const addzero = date.split("/")
-  let swap:string;
+// function getCurrentDate(){
+//   const addzero = date.split("/")
+//   let swap:string;
 
-  for(let i=0;i<addzero.length-1;i++){
-    if (addzero[i].length === 1){
-      addzero[i] = `0${addzero[i]}`
-    }
-  }
-  swap = addzero[0]
-  addzero[0] = addzero[1]
-  addzero[1] = swap
+//   for(let i=0;i<addzero.length-1;i++){
+//     if (addzero[i].length === 1){
+//       addzero[i] = `0${addzero[i]}`
+//     }
+//   }
+//   swap = addzero[0]
+//   addzero[0] = addzero[1]
+//   addzero[1] = swap
 
-  return `Todays date is: ${addzero.join("/")}`
-}
+//   return `Todays date is: ${addzero.join("/")}`
+// }
 
-console.log(getCurrentDate())
+// console.log(getCurrentDate())
 
 /*
 # Playwright
@@ -33,12 +33,20 @@ console.log(getCurrentDate())
 
 import { test, expect } from "@playwright/test";
 
-const mock = [{name: "Cam",id:1}, {name: "Táo",id:2}, {name: "Xoài",id:3}]
+const mock = [{name:"Cam",id: 1},{name:"Táo",id: 2},{name:"Xoài",id: 3}]
 
 test('List fruits mocking API',async ({page})=>{
     await page.route('*/**/api/v1/fruits', async route =>{
-        await route.fulfill({mock})
+        await route.fulfill({
+          status:200,body: 
+          JSON.stringify(mock)})
     })
 
     await page.goto('https://demo.playwright.dev/api-mocking');
+    
+    await page.waitForResponse()
+
+    expect(page.locator('ul')).toHaveCount(3)
+
+
 })
