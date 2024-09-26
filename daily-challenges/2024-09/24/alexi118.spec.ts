@@ -48,14 +48,10 @@ test("List fruits mocking API", async ({ page }) => {
     });
   });
 
-  const responsePromise = page.waitForResponse(
+  await page.goto("https://demo.playwright.dev/api-mocking");
+  await page.waitForResponse(
     (resp) => resp.url().includes(fruitapi) && resp.status() === 200
   );
 
-  await page.goto("https://demo.playwright.dev/api-mocking");
-  const response = await responsePromise;
-
-  await page.pause();
-
-  expect(page.locator("ul > li")).toHaveText(["Cam", "Táo", "Xoài"]);
+  await expect(page.locator("ul > li")).toHaveText(["Cam", "Táo", "Xoài"]);
 });
