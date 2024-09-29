@@ -12,7 +12,12 @@
     "@types/node": "^20.12.12"
   },
   "dependencies": {
+<<<<<<< HEAD
     "dotenv": "^16.4.5",
     "playwright": "^1.47.1"
+=======
+    "csv-parse": "^5.5.6",
+    "dotenv": "^16.4.5"
+>>>>>>> 56f59a5b5af27e6cb03876bfdd559eb5e6c274db
   }
 }
